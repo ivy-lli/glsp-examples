@@ -13,9 +13,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
- import {
+import {
     boundsFeature,
-     CircularNode,
+    CircularNode,
     connectableFeature,
     deletableFeature,
     DiamondNode,
@@ -36,17 +36,17 @@
     SShapeElement,
     WithEditableLabel,
     withEditLabelFeature
-} from "@eclipse-glsp/client";
-
+} from '@eclipse-glsp/client';
 
 export class TaskNode extends RectangularNode implements Nameable, WithEditableLabel {
     static readonly DEFAULT_FEATURES = [connectableFeature, deletableFeature, selectFeature, boundsFeature,
         moveFeature, layoutContainerFeature, fadeFeature, hoverFeedbackFeature, popupFeature, nameFeature, withEditLabelFeature];
-    name: string = "";
+    name = '';
     duration?: number;
     taskType?: string;
     reference?: string;
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get editableLabel() {
         const headerComp = this.children.find(element => element.type === 'comp:header');
         if (headerComp) {
@@ -78,7 +78,6 @@ export class EventNode extends CircularNode {
 }
 
 export class ActivityNode extends DiamondNode {
-    nodeType: string = ActivityNode.Type.UNDEFINED;
     size = {
         width: 32,
         height: 32
@@ -89,23 +88,11 @@ export class ActivityNode extends DiamondNode {
     }
 }
 
-export namespace ActivityNode {
-    export namespace Type {
-        export const INITIAL = 'initalNode';
-        export const FINAL = 'finalNode';
-        export const DECISION = 'decisionNode';
-        export const MERGE = 'mergeNode';
-        export const JOIN = 'joinNode';
-        export const FORK = 'forkNode';
-        export const UNDEFINED = "undefined";
-    }
-}
-
 export class Icon extends SShapeElement implements LayoutContainer {
     static readonly DEFAULT_FEATURES = [boundsFeature, layoutContainerFeature, layoutableChildFeature, fadeFeature];
 
     layout: string;
-    layoutOptions?: { [key: string]: string | number | boolean; };
+    layoutOptions?: { [key: string]: string | number | boolean };
     size = {
         width: 32,
         height: 32

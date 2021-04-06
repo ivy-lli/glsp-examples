@@ -39,8 +39,6 @@ import {
     openModule,
     overrideViewerOptions,
     paletteModule,
-    RectangularNode,
-    RectangularNodeView,
     routingModule,
     SEdge,
     SGraphView,
@@ -52,8 +50,16 @@ import {
     zorderModule
 } from '@eclipse-glsp/client';
 import { Container, ContainerModule } from 'inversify';
+
 import { ActivityNode, EventNode, TaskNode } from './model';
-import { AssociationEdgeView, EventNodeView, EventTaskNodeView, ForkOrJoinNodeView, TaskNodeView, WorkflowEdgeView } from './workflow-views';
+import {
+    AssociationEdgeView,
+    EventNodeView,
+    EventTaskNodeView,
+    ForkOrJoinNodeView,
+    TaskNodeView,
+    WorkflowEdgeView
+} from './workflow-views';
 
 const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -70,7 +76,7 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'node:comment', TaskNode, TaskNodeView);
     configureModelElement(context, 'edge', SEdge, WorkflowEdgeView);
     configureModelElement(context, 'edge:association', SEdge, AssociationEdgeView);
-    //configureModelElement(context, 'label', ForeignObjectElement, ForeignObjectView);
+    // configureModelElement(context, 'label', ForeignObjectElement, ForeignObjectView);
 });
 
 export default function createContainer(widgetId: string): Container {

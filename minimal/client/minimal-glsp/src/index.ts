@@ -15,5 +15,4 @@
  ********************************************************************************/
 import creatMinimalDiagramContainer from './di.config';
 
- export { creatMinimalDiagramContainer };
- 
+export { creatMinimalDiagramContainer };

@@ -15,29 +15,23 @@
  ********************************************************************************/
  import {
     angleOfPoint,
-     CircularNode,
      CircularNodeView,
      Diamond,
      DiamondNodeView,
-     ForeignObjectElement,
     IView,
     Point,
     PolylineEdgeView,
     RectangularNodeView,
     RenderingContext,
     SEdge,
-    setAttr,
-    setNamespace,
-    ShapeView,
-    SLabel,
     SShapeElement,
     toDegrees
-} from "@eclipse-glsp/client";
-import { injectable } from "inversify";
-import * as snabbdom from "snabbdom-jsx";
-import { VNode } from "snabbdom/vnode";
+} from '@eclipse-glsp/client';
+import { injectable } from 'inversify';
+import * as snabbdom from 'snabbdom-jsx';
+import { VNode } from 'snabbdom/vnode';
 
-import { ActivityNode, EventNode, Icon, TaskNode, WeightedEdge } from "./model";
+import { ActivityNode, EventNode, Icon, TaskNode, WeightedEdge } from './model';
 
 const JSX = { createElement: snabbdom.svg };
 
@@ -82,6 +76,7 @@ export class TaskNodeView extends RectangularNodeView {
                 class-mouseover={node.hoverFeedback} class-selected={node.selected}
                 x={0} y={0} rx={rcr} ry={rcr}
                 width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)}></rect>
+            <text class-sprotty-node>node.</text>
             {context.renderChildren(node)}
         </g>;
         return graph;
