@@ -18,5 +18,5 @@ export namespace MinimalLanguage {
     export const Name: string = "Minimal";
     export const Label: string = "Minimal diagram";
     export const DiagramType: string = "minimal-diagram";
-    export const FileExtension: string = ".minimal";
+    export const FileExtension: string = ".mod";
 }

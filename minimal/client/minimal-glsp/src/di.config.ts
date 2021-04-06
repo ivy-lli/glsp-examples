@@ -13,66 +13,84 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import "../css/diagram.css";
+ import "../css/diagram.css";
 
-import {
-    boundsModule,
-    buttonModule,
-    configureModelElement,
-    ConsoleLogger,
-    defaultGLSPModule,
-    defaultModule,
-    edgeLayoutModule,
-    expandModule,
-    exportModule,
-    fadeModule,
-    glspDecorationModule,
-    GLSPGraph,
-    glspHoverModule,
-    glspMouseToolModule,
-    glspSelectModule,
-    glspServerCopyPasteModule,
-    layoutCommandsModule,
-    LogLevel,
-    modelHintsModule,
-    modelSourceModule,
-    openModule,
-    overrideViewerOptions,
-    paletteModule,
-    RectangularNode,
-    RectangularNodeView,
-    routingModule,
-    SGraphView,
-    toolFeedbackModule,
-    toolsModule,
-    TYPES,
-    validationModule,
-    viewportModule,
-    zorderModule
-} from "@eclipse-glsp/client";
-import { Container, ContainerModule } from "inversify";
-
-const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
-    rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
-    rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
-    const context = { bind, unbind, isBound, rebind };
-    configureModelElement(context, 'graph', GLSPGraph, SGraphView);
-    configureModelElement(context, 'node', RectangularNode, RectangularNodeView);
-});
-
-export default function createContainer(widgetId: string): Container {
-    const container = new Container();
-
-    container.load(validationModule, defaultModule, glspMouseToolModule, defaultGLSPModule, glspSelectModule, boundsModule, viewportModule, toolsModule,
-        glspHoverModule, fadeModule, exportModule, expandModule, openModule, buttonModule, modelSourceModule,
-        minimalDiagramModule, toolFeedbackModule, modelHintsModule, glspServerCopyPasteModule, paletteModule, routingModule, glspDecorationModule, edgeLayoutModule, zorderModule,
-        layoutCommandsModule);
-
-    overrideViewerOptions(container, {
-        baseDiv: widgetId,
-        hiddenDiv: widgetId + '_hidden',
-        needsClientLayout: true
-    });
-
-    return container;
-}
+ import {
+     boundsModule,
+     buttonModule,
+     CircularNode,
+     configureModelElement,
+     ConsoleLogger,
+     defaultGLSPModule,
+     defaultModule,
+     edgeLayoutModule,
+     expandModule,
+     exportModule,
+     fadeModule,
+     ForeignObjectElement,
+     ForeignObjectView,
+     glspDecorationModule,
+     GLSPGraph,
+     glspHoverModule,
+     glspMouseToolModule,
+     glspSelectModule,
+     glspServerCopyPasteModule,
+     layoutCommandsModule,
+     LogLevel,
+     modelHintsModule,
+     modelSourceModule,
+     openModule,
+     overrideViewerOptions,
+     paletteModule,
+     routingModule,
+     SEdge,
+     SGraphView,
+     SLabel,
+     SLabelView,
+     toolFeedbackModule,
+     toolsModule,
+     TYPES,
+     validationModule,
+     viewportModule,
+     zorderModule
+ } from "@eclipse-glsp/client";
+ import { Container, ContainerModule } from "inversify";
+ 
+ import { ActivityNode, EventNode, TaskNode } from "./model";
+ import { ForkOrJoinNodeView, EventNodeView, TaskNodeView, WorkflowEdgeView, EventTaskNodeView, AssociationEdgeView } from "./workflow-views";
+ 
+ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
+     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
+     rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
+     const context = { bind, unbind, isBound, rebind };
+     configureModelElement(context, 'graph', GLSPGraph, SGraphView);
+     // configureModelElement(context, 'node', RectangularNode, RectangularNodeView);
+     configureModelElement(context, 'event:start', EventNode, EventNodeView);
+     configureModelElement(context, 'event:end', EventNode, EventNodeView);
+     configureModelElement(context, 'event:task', EventNode, EventTaskNodeView);
+     configureModelElement(context, 'activity:alternative', ActivityNode, ForkOrJoinNodeView);
+     configureModelElement(context, 'activity:gateway', ActivityNode, ForkOrJoinNodeView);
+     configureModelElement(context, 'node', TaskNode, TaskNodeView);
+     configureModelElement(context, 'node:comment', TaskNode, TaskNodeView);
+     configureModelElement(context, 'edge', SEdge, WorkflowEdgeView);
+     configureModelElement(context, 'edge:association', SEdge, AssociationEdgeView);
+     //configureModelElement(context, 'label', ForeignObjectElement, ForeignObjectView);
+ });
+ 
+ export default function createContainer(widgetId: string): Container {
+     const container = new Container();
+ 
+     container.load(validationModule, defaultModule, glspMouseToolModule, defaultGLSPModule, glspSelectModule, boundsModule, viewportModule, toolsModule,
+         glspHoverModule, fadeModule, exportModule, expandModule, openModule, buttonModule, modelSourceModule,
+         minimalDiagramModule, toolFeedbackModule, modelHintsModule, glspServerCopyPasteModule, paletteModule, routingModule, glspDecorationModule, edgeLayoutModule, zorderModule,
+         layoutCommandsModule);
+ 
+     overrideViewerOptions(container, {
+         baseDiv: widgetId,
+         hiddenDiv: widgetId + '_hidden',
+         needsClientLayout: true
+     });
+ 
+     return container;
+ }
+ 
