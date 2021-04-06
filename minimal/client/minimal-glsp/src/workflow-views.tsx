@@ -95,8 +95,8 @@ export class ForkOrJoinNodeView extends DiamondNodeView {
         const diamond = new Diamond({ height: Math.max(node.size.height, 0), width: Math.max(node.size.width, 0), x: 0, y: 0 });
         const points = `${this.svgStr(diamond.topPoint)} ${this.svgStr(diamond.rightPoint)} ${this.svgStr(diamond.bottomPoint)} ${this.svgStr(diamond.leftPoint)}`;
         const radius = this.getRadius(node);
-        const startCoordinate = radius / 1.5;
-        const endCoordinate = node.size.height - startCoordinate;
+        let startCoordinate = radius / 1.5;
+        let endCoordinate = node.size.height - startCoordinate;
         let decorator = <g>
             <circle class-sprotty-node={true} class-sprotty-task-node={true}
                 r={radius / 2} cx={radius} cy={radius}>
@@ -105,8 +105,8 @@ export class ForkOrJoinNodeView extends DiamondNodeView {
             <line class-sprotty-node-decorator x1={startCoordinate} y1={radius} x2={endCoordinate} y2={radius} />
         </g>;
         if (node.isAlternative) {
-            const startCoordinate = node.size.height / 3;
-            const endCoordinate = node.size.height - startCoordinate;
+            startCoordinate = node.size.height / 3;
+            endCoordinate = node.size.height - startCoordinate;
             decorator = <g>
                 <line class-sprotty-node-decorator x1={startCoordinate} y1={startCoordinate} x2={endCoordinate} y2={endCoordinate} />
                 <line class-sprotty-node-decorator x1={startCoordinate} y1={endCoordinate} x2={endCoordinate} y2={startCoordinate} />
@@ -139,7 +139,7 @@ export class ForeignLabelView implements IView {
         const foreignObjectContents = virtualize('<div>' + replacement + '</div>');
         const node = <g>
             <foreignObject requiredFeatures='http://www.w3.org/TR/SVG11/feature#Extensibility'
-                height={model.bounds.height} width={model.bounds.width} x={0} y={0}
+                height={model.bounds.height} width={model.bounds.width} x={0} y={0} z={10}
                 class-sprotty-label>
                 {foreignObjectContents}
             </foreignObject>
