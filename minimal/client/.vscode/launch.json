@@ -46,7 +46,7 @@
         "--loglevel=debug",
         "--port=3000",
         "--no-cluster",
-        "--MINIMAL_GLSP=5013",
+        "--MINIMAL_GLSP=5007",
         "--DEBUG",
         "--app-project-path=${workspaceRoot}/browser-app"
       ],

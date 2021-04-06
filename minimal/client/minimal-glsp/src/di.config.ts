@@ -42,6 +42,7 @@ import {
     routingModule,
     SEdge,
     SGraphView,
+    SLabel,
     toolFeedbackModule,
     toolsModule,
     TYPES,
@@ -56,6 +57,7 @@ import {
     AssociationEdgeView,
     EventNodeView,
     EventTaskNodeView,
+    ForeignLabelView,
     ForkOrJoinNodeView,
     TaskNodeView,
     WorkflowEdgeView
@@ -76,7 +78,7 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'node:comment', TaskNode, TaskNodeView);
     configureModelElement(context, 'edge', SEdge, WorkflowEdgeView);
     configureModelElement(context, 'edge:association', SEdge, AssociationEdgeView);
-    // configureModelElement(context, 'label', ForeignObjectElement, ForeignObjectView);
+    configureModelElement(context, 'label', SLabel, ForeignLabelView);
 });
 
 export default function createContainer(widgetId: string): Container {

@@ -13,17 +13,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
- import {
+import {
     angleOfPoint,
-     CircularNodeView,
-     Diamond,
-     DiamondNodeView,
+    CircularNodeView,
+    Diamond,
+    DiamondNodeView,
     IView,
     Point,
     PolylineEdgeView,
     RectangularNodeView,
     RenderingContext,
     SEdge,
+    SLabel,
     SShapeElement,
     toDegrees
 } from '@eclipse-glsp/client';
@@ -33,6 +34,9 @@ import { VNode } from 'snabbdom/vnode';
 
 import { ActivityNode, EventNode, Icon, TaskNode, WeightedEdge } from './model';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const virtualize = require('snabbdom-virtualize/strings').default;
+
 const JSX = { createElement: snabbdom.svg };
 
 @injectable()
@@ -41,8 +45,8 @@ export class EventNodeView extends CircularNodeView {
         const radius = this.getRadius(node);
         return <g>
             <circle class-sprotty-node={true} class-sprotty-end-node={node.isEndNode}
-                    class-mouseover={node.hoverFeedback} class-selected={node.selected}
-                    r={radius} cx={radius} cy={radius}></circle>
+                class-mouseover={node.hoverFeedback} class-selected={node.selected}
+                r={radius} cx={radius} cy={radius}></circle>
             {context.renderChildren(node)}
         </g>;
     }
@@ -54,15 +58,14 @@ export class EventTaskNodeView extends EventNodeView {
         const radius = this.getRadius(node);
         return <g>
             <circle class-sprotty-node={true}
-                    class-mouseover={node.hoverFeedback} class-selected={node.selected}
-                    r={radius} cx={radius} cy={radius}></circle>
+                class-mouseover={node.hoverFeedback} class-selected={node.selected}
+                r={radius} cx={radius} cy={radius}></circle>
             <circle class-sprotty-node={true} class-sprotty-task-node={true}
-                    r={radius - 3} cx={radius} cy={radius}></circle>
+                r={radius - 3} cx={radius} cy={radius}></circle>
             {context.renderChildren(node)}
         </g>;
     }
 }
-
 
 @injectable()
 export class TaskNodeView extends RectangularNodeView {
@@ -76,7 +79,6 @@ export class TaskNodeView extends RectangularNodeView {
                 class-mouseover={node.hoverFeedback} class-selected={node.selected}
                 x={0} y={0} rx={rcr} ry={rcr}
                 width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)}></rect>
-            <text class-sprotty-node>node.</text>
             {context.renderChildren(node)}
         </g>;
         return graph;
@@ -93,29 +95,28 @@ export class ForkOrJoinNodeView extends DiamondNodeView {
         const diamond = new Diamond({ height: Math.max(node.size.height, 0), width: Math.max(node.size.width, 0), x: 0, y: 0 });
         const points = `${this.svgStr(diamond.topPoint)} ${this.svgStr(diamond.rightPoint)} ${this.svgStr(diamond.bottomPoint)} ${this.svgStr(diamond.leftPoint)}`;
         const radius = this.getRadius(node);
-        let startCoordinate = radius / 1.5;
-        let endCoordinate = node.size.height - startCoordinate;
+        const startCoordinate = radius / 1.5;
+        const endCoordinate = node.size.height - startCoordinate;
         let decorator = <g>
-                <circle class-sprotty-node={true} class-sprotty-task-node={true}
-                    r={radius / 2} cx={radius} cy={radius}>
-                </circle>
-                <line class-sprotty-node-decorator x1={radius} y1={startCoordinate} x2={radius} y2={endCoordinate} />
-                <line class-sprotty-node-decorator x1={startCoordinate} y1={radius} x2={endCoordinate} y2={radius} />
-            </g>;
-        if (node.isAlternative)
-        {
-            let startCoordinate = node.size.height / 3;
-            let endCoordinate = node.size.height - startCoordinate;
+            <circle class-sprotty-node={true} class-sprotty-task-node={true}
+                r={radius / 2} cx={radius} cy={radius}>
+            </circle>
+            <line class-sprotty-node-decorator x1={radius} y1={startCoordinate} x2={radius} y2={endCoordinate} />
+            <line class-sprotty-node-decorator x1={startCoordinate} y1={radius} x2={endCoordinate} y2={radius} />
+        </g>;
+        if (node.isAlternative) {
+            const startCoordinate = node.size.height / 3;
+            const endCoordinate = node.size.height - startCoordinate;
             decorator = <g>
                 <line class-sprotty-node-decorator x1={startCoordinate} y1={startCoordinate} x2={endCoordinate} y2={endCoordinate} />
                 <line class-sprotty-node-decorator x1={startCoordinate} y1={endCoordinate} x2={endCoordinate} y2={startCoordinate} />
-            </g>
+            </g>;
         }
-        
+
         return <g>
             <polygon class-sprotty-node={true}
-                  class-mouseover={node.hoverFeedback} class-selected={node.selected}
-                  points={points} />
+                class-mouseover={node.hoverFeedback} class-selected={node.selected}
+                points={points} />
             {decorator}
             {context.renderChildren(node)}
         </g>;
@@ -128,6 +129,23 @@ export class ForkOrJoinNodeView extends DiamondNodeView {
 
     protected svgStr(point: Point) {
         return `${point.x},${point.y}`;
+    }
+}
+
+@injectable()
+export class ForeignLabelView implements IView {
+    render(model: SLabel, context: RenderingContext): VNode {
+        const replacement = model.text.replace(/\n/g, '<br/>');
+        const foreignObjectContents = virtualize('<div>' + replacement + '</div>');
+        const node = <g>
+            <foreignObject requiredFeatures='http://www.w3.org/TR/SVG11/feature#Extensibility'
+                height={model.bounds.height} width={model.bounds.width} x={0} y={0}
+                class-sprotty-label>
+                {foreignObjectContents}
+            </foreignObject>
+            {context.renderChildren(model)}
+        </g>;
+        return node;
     }
 }
 
@@ -148,8 +166,9 @@ export class AssociationEdgeView extends WorkflowEdgeView {
     render(edge: Readonly<WeightedEdge>, context: RenderingContext): VNode {
         const router = this.edgeRouterRegistry.get(edge.routerKind);
         const route = router.route(edge);
-        if (route.length === 0)
-            return this.renderDanglingEdge("Cannot compute route", edge, context);
+        if (route.length === 0) {
+            return this.renderDanglingEdge('Cannot compute route', edge, context);
+        }
 
         return <g class-sprotty-edge={true}
             class-sprotty-edge-association={true}
@@ -165,8 +184,9 @@ export class WeightedEdgeView extends WorkflowEdgeView {
     render(edge: Readonly<WeightedEdge>, context: RenderingContext): VNode {
         const router = this.edgeRouterRegistry.get(edge.routerKind);
         const route = router.route(edge);
-        if (route.length === 0)
-            return this.renderDanglingEdge("Cannot compute route", edge, context);
+        if (route.length === 0) {
+            return this.renderDanglingEdge('Cannot compute route', edge, context);
+        }
 
         return <g class-sprotty-edge={true}
             class-weighted={true}
