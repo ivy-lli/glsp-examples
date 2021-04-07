@@ -26,12 +26,13 @@ import {
     expandModule,
     exportModule,
     fadeModule,
-    glspDecorationModule,
     GLSPGraph,
     glspHoverModule,
     glspMouseToolModule,
     glspSelectModule,
     glspServerCopyPasteModule,
+    HtmlRoot,
+    HtmlRootView,
     layoutCommandsModule,
     LogLevel,
     modelHintsModule,
@@ -39,6 +40,8 @@ import {
     openModule,
     overrideViewerOptions,
     paletteModule,
+    PreRenderedElement,
+    PreRenderedView,
     routingModule,
     SEdge,
     SGraphView,
@@ -52,6 +55,7 @@ import {
 } from '@eclipse-glsp/client';
 import { Container, ContainerModule } from 'inversify';
 
+import ivyDecorationModule from './decorator/di.config';
 import { ActivityNode, EventNode, TaskNode } from './model';
 import {
     AssociationEdgeView,
@@ -79,6 +83,8 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'edge', SEdge, WorkflowEdgeView);
     configureModelElement(context, 'edge:association', SEdge, AssociationEdgeView);
     configureModelElement(context, 'label', SLabel, ForeignLabelView);
+    configureModelElement(context, 'html', HtmlRoot, HtmlRootView);
+    configureModelElement(context, 'pre-rendered', PreRenderedElement, PreRenderedView);
 });
 
 export default function createContainer(widgetId: string): Container {
@@ -86,7 +92,7 @@ export default function createContainer(widgetId: string): Container {
 
     container.load(validationModule, defaultModule, glspMouseToolModule, defaultGLSPModule, glspSelectModule, boundsModule, viewportModule, toolsModule,
         glspHoverModule, fadeModule, exportModule, expandModule, openModule, buttonModule, modelSourceModule,
-        minimalDiagramModule, toolFeedbackModule, modelHintsModule, glspServerCopyPasteModule, paletteModule, routingModule, glspDecorationModule, edgeLayoutModule, zorderModule,
+        minimalDiagramModule, toolFeedbackModule, modelHintsModule, glspServerCopyPasteModule, paletteModule, routingModule, ivyDecorationModule, edgeLayoutModule, zorderModule,
         layoutCommandsModule);
 
     overrideViewerOptions(container, {
