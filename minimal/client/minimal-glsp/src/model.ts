@@ -63,7 +63,11 @@ export class TaskNode extends RectangularNode implements Nameable, WithEditableL
     }
 
     get isCallSub(): boolean {
-        return this.type === 'node:subproc' || this.type === 'node:embeddedproc';
+        return this.type === 'node:embeddedproc';
+    }
+
+    get isSubProc(): boolean {
+        return this.type === 'node:subproc';
     }
 
     get icon(): string | undefined {

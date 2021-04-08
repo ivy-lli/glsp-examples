@@ -58,6 +58,9 @@ svg {
   fill: var(--theia-editor-foreground);
   text-anchor: middle;
 }
+.subproc .sprotty-node {
+  stroke-width: 2px;
+}
 
 .minimal-node {
   fill: lightsalmon;
@@ -73,6 +76,7 @@ svg {
   stroke: var(--theia-menu-selectionBackground);
 }
 
+.comment .sprotty-node,
 .sprotty-edge-association {
   stroke-dasharray: 5, 5;
 }

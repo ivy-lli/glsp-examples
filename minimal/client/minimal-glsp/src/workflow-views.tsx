@@ -73,7 +73,6 @@ export class TaskNodeView extends RectangularNodeView {
         const rcr = this.getRoundedCornerRadius(node);
         return <g>
             <rect class-sprotty-node={true} class-task={true}
-                class-sprotty-edge-association={node.isCommentBox}
                 class-mouseover={node.hoverFeedback} class-selected={node.selected}
                 x={0} y={0} rx={rcr} ry={rcr}
                 width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)}></rect>
@@ -84,7 +83,7 @@ export class TaskNodeView extends RectangularNodeView {
     }
 
     protected getNodeDecorator(node: TaskNode): VNode {
-        if (!node.isCallSub) {
+        if (!node.isCallSub && !node.isSubProc) {
             return <g></g>;
         }
         const diameter = 10;
