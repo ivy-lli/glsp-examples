@@ -47,8 +47,23 @@ export class EventNodeView extends CircularNodeView {
             <circle class-sprotty-node={true} class-sprotty-end-node={node.isEndNode}
                 class-mouseover={node.hoverFeedback} class-selected={node.selected}
                 r={radius} cx={radius} cy={radius}></circle>
+            {this.getDecorator(node)}
             {context.renderChildren(node)}
         </g>;
+    }
+
+    protected getDecorator(node: EventNode): VNode {
+        let decorator = '';
+        if (node.isSignalNode) {
+            decorator = 'M5,0 L10,10 l-10,0 Z';
+        }
+        if (node.isErrorNode) {
+            decorator = 'M0,8 L4,5 L6,7 L10,2 L6,5 L4,3 Z';
+        }
+        return <svg height={14} width={14} x={8} y={8} viewBox={'0 0 10 10'}
+            class-sprotty-node-decorator={true}>
+            <path fill={'none'} d={decorator}></path>
+        </svg>;
     }
 }
 
@@ -62,6 +77,7 @@ export class EventTaskNodeView extends EventNodeView {
                 r={radius} cx={radius} cy={radius}></circle>
             <circle class-sprotty-node={true} class-sprotty-task-node={true}
                 r={radius - 3} cx={radius} cy={radius}></circle>
+            {this.getDecorator(node)}
             {context.renderChildren(node)}
         </g>;
     }

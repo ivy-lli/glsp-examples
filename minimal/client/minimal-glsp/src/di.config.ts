@@ -74,8 +74,13 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'graph', GLSPGraph, SGraphView);
     // configureModelElement(context, 'node', RectangularNode, RectangularNodeView);
     configureModelElement(context, 'event:start', EventNode, EventNodeView);
+    configureModelElement(context, 'event:start:error', EventNode, EventNodeView);
+    configureModelElement(context, 'event:start:signal', EventNode, EventNodeView);
     configureModelElement(context, 'event:end', EventNode, EventNodeView);
+    configureModelElement(context, 'event:end:error', EventNode, EventNodeView);
     configureModelElement(context, 'event:task', EventNode, EventTaskNodeView);
+    configureModelElement(context, 'event:boundary:error', EventNode, EventTaskNodeView);
+    configureModelElement(context, 'event:boundary:signal', EventNode, EventTaskNodeView);
     configureModelElement(context, 'activity:alternative', ActivityNode, ForkOrJoinNodeView);
     configureModelElement(context, 'activity:gateway', ActivityNode, ForkOrJoinNodeView);
     configureModelElement(context, 'node', TaskNode, TaskNodeView);

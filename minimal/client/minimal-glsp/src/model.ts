@@ -101,7 +101,15 @@ export class WeightedEdge extends SEdge {
 
 export class EventNode extends CircularNode {
     get isEndNode(): boolean {
-        return this.type === 'event:end';
+        return this.type.startsWith('event:end');
+    }
+
+    get isSignalNode(): boolean {
+        return this.type.endsWith(':signal');
+    }
+
+    get isErrorNode(): boolean {
+        return this.type.endsWith(':error');
     }
 }
 
