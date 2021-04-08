@@ -62,6 +62,10 @@ export class TaskNode extends RectangularNode implements Nameable, WithEditableL
         return this.type === 'node:comment';
     }
 
+    get isCallSub(): boolean {
+        return this.type === 'node:subproc' || this.type === 'node:embeddedproc';
+    }
+
     get icon(): string | undefined {
         switch (this.type) {
             case 'node:script':

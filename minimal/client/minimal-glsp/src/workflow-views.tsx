@@ -73,15 +73,29 @@ export class TaskNodeView extends RectangularNodeView {
         const rcr = this.getRoundedCornerRadius(node);
         return <g>
             <rect class-sprotty-node={true} class-task={true}
-                class-automated={node.taskType === 'automated'}
-                class-manual={node.taskType === 'manual'}
                 class-sprotty-edge-association={node.isCommentBox}
                 class-mouseover={node.hoverFeedback} class-selected={node.selected}
                 x={0} y={0} rx={rcr} ry={rcr}
                 width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)}></rect>
             {this.getIconDecorator(node)}
+            {this.getNodeDecorator(node)}
             {context.renderChildren(node)}
         </g>;
+    }
+
+    protected getNodeDecorator(node: TaskNode): VNode {
+        if (!node.isCallSub) {
+            return <g></g>;
+        }
+        const diameter = 10;
+        const radius = diameter / 2;
+        const padding = 2;
+        return <svg x={node.bounds.width / 2 - radius} y={node.bounds.height - diameter}>
+            <rect class-sprotty-node={true} class-sprotty-task-node={true}
+                width={diameter} height={diameter} />
+            <line class-sprotty-node-decorator x1={radius} y1={padding} x2={radius} y2={diameter - padding} />
+            <line class-sprotty-node-decorator x1={padding} y1={radius} x2={diameter - padding} y2={radius} />
+        </svg>;
     }
 
     protected getIconDecorator(node: TaskNode): VNode {

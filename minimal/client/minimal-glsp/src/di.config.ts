@@ -87,6 +87,8 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'node:rest', TaskNode, TaskNodeView);
     configureModelElement(context, 'node:db', TaskNode, TaskNodeView);
     configureModelElement(context, 'node:email', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:subproc', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:embeddedproc', TaskNode, TaskNodeView);
     configureModelElement(context, 'edge', SEdge, WorkflowEdgeView);
     configureModelElement(context, 'edge:association', SEdge, AssociationEdgeView);
     configureModelElement(context, 'label', SLabel, ForeignLabelView);
