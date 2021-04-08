@@ -80,6 +80,13 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'activity:gateway', ActivityNode, ForkOrJoinNodeView);
     configureModelElement(context, 'node', TaskNode, TaskNodeView);
     configureModelElement(context, 'node:comment', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:script', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:hd', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:user', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:soap', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:rest', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:db', TaskNode, TaskNodeView);
+    configureModelElement(context, 'node:email', TaskNode, TaskNodeView);
     configureModelElement(context, 'edge', SEdge, WorkflowEdgeView);
     configureModelElement(context, 'edge:association', SEdge, AssociationEdgeView);
     configureModelElement(context, 'label', SLabel, ForeignLabelView);

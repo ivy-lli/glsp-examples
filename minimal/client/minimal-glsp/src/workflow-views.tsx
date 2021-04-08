@@ -71,9 +71,7 @@ export class EventTaskNodeView extends EventNodeView {
 export class TaskNodeView extends RectangularNodeView {
     render(node: TaskNode, context: RenderingContext): VNode {
         const rcr = this.getRoundedCornerRadius(node);
-        const replacement = 'A';
-        const foreignObjectContents = virtualize('<div>' + replacement + '</div>');
-        const graph = <g>
+        return <g>
             <rect class-sprotty-node={true} class-task={true}
                 class-automated={node.taskType === 'automated'}
                 class-manual={node.taskType === 'manual'}
@@ -81,16 +79,25 @@ export class TaskNodeView extends RectangularNodeView {
                 class-mouseover={node.hoverFeedback} class-selected={node.selected}
                 x={0} y={0} rx={rcr} ry={rcr}
                 width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)}></rect>
-            <rect x={-8} y={0} rx={0} ry={0}
-                width={16} height={16}></rect>
-            <foreignObject requiredFeatures='http://www.w3.org/TR/SVG11/feature#Extensibility'
-                height={16} width={16} x={-8} y={0}
-                class-sprotty-icon>
-                {foreignObjectContents}
-            </foreignObject>
+            {this.getIconDecorator(node)}
             {context.renderChildren(node)}
         </g>;
-        return graph;
+    }
+
+    protected getIconDecorator(node: TaskNode): VNode {
+        const icon = node.icon;
+        if (!icon) {
+            return <g></g>;
+        }
+        const foreignObjectContents = virtualize('<i class="fa fa-fw ' + icon + '"></i>');
+        const translate = 'translate(-8, 0)';
+        return <g>
+            <foreignObject requiredFeatures='http://www.w3.org/TR/SVG11/feature#Extensibility'
+                height={16} width={20} x={0} y={0}
+                class-sprotty-icon transform={translate}>
+                {foreignObjectContents}
+            </foreignObject>
+        </g>;
     }
 
     protected getRoundedCornerRadius(node: SShapeElement): number {

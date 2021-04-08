@@ -61,6 +61,26 @@ export class TaskNode extends RectangularNode implements Nameable, WithEditableL
     get isCommentBox(): boolean {
         return this.type === 'node:comment';
     }
+
+    get icon(): string | undefined {
+        switch (this.type) {
+            case 'node:script':
+                return 'fa-cog';
+            case 'node:hd':
+                return 'fa-desktop';
+            case 'node:user':
+                return 'fa-user';
+            case 'node:soap':
+                return 'fa-globe';
+            case 'node:rest':
+                return 'fa-exchange-alt';
+            case 'node:db':
+                return 'fa-database';
+            case 'node:email':
+                return 'fa-envelope';
+        }
+        return undefined;
+    }
 }
 
 export function isTaskNode(element: SModelElement): element is TaskNode {

@@ -46,6 +46,13 @@ svg {
 .sprotty-label {
   font-size: 12px;
 }
+.sprotty-icon {
+  background-color: var(--theia-editor-background);
+  border-radius: 3px;
+}
+.sprotty-icon i {
+  font-size: 16px;
+}
 .sprotty-node-decorator {
   stroke: var(--theia-editor-foreground);
   fill: var(--theia-editor-foreground);
