@@ -31,6 +31,7 @@ import {
     glspMouseToolModule,
     glspSelectModule,
     glspServerCopyPasteModule,
+    GridSnapper,
     HtmlRoot,
     HtmlRootView,
     layoutCommandsModule,
@@ -72,6 +73,7 @@ import {
 const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
     rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
+    bind(TYPES.ISnapper).to(GridSnapper);
     const context = { bind, unbind, isBound, rebind };
     configureModelElement(context, 'graph', GLSPGraph, SGraphView);
     // configureModelElement(context, 'node', RectangularNode, RectangularNodeView);
