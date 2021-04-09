@@ -46,6 +46,8 @@ import {
     SEdge,
     SGraphView,
     SLabel,
+    SRoutingHandle,
+    SRoutingHandleView,
     toolFeedbackModule,
     toolsModule,
     TYPES,
@@ -99,6 +101,8 @@ const minimalDiagramModule = new ContainerModule((bind, unbind, isBound, rebind)
     configureModelElement(context, 'label', SLabel, ForeignLabelView);
     configureModelElement(context, 'html', HtmlRoot, HtmlRootView);
     configureModelElement(context, 'pre-rendered', PreRenderedElement, PreRenderedView);
+    configureModelElement(context, 'routing-point', SRoutingHandle, SRoutingHandleView);
+    configureModelElement(context, 'volatile-routing-point', SRoutingHandle, SRoutingHandleView);
 });
 
 export default function createContainer(widgetId: string): Container {

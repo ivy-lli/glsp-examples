@@ -33,6 +33,7 @@ import {
     SEdge,
     selectFeature,
     SModelElement,
+    SRoutableElement,
     SShapeElement,
     WithEditableLabel,
     withEditLabelFeature
@@ -104,12 +105,24 @@ export class EventNode extends CircularNode {
         return this.type.startsWith('event:end');
     }
 
+    get isStartNode(): boolean {
+        return this.type.startsWith('event:start');
+    }
+
     get isSignalNode(): boolean {
         return this.type.endsWith(':signal');
     }
 
     get isErrorNode(): boolean {
         return this.type.endsWith(':error');
+    }
+
+    canConnect(routable: SRoutableElement, role: string): boolean {
+        const canConnect = super.canConnect(routable, role);
+        const validNode = !this.isEndNode && !this.isStartNode
+            || this.isEndNode && role === 'target'
+            || !this.isEndNode && role === 'source';
+        return canConnect && validNode;
     }
 }
 
