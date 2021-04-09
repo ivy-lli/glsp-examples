@@ -119,11 +119,12 @@ export class TaskNodeView extends RectangularNodeView {
             return <g></g>;
         }
         const foreignObjectContents = virtualize('<i class="fa fa-fw ' + icon + '"></i>');
-        const translate = 'translate(-8, -1)';
+        // const translate = 'translate(-8, -1)';
         return <g>
             <foreignObject requiredFeatures='http://www.w3.org/TR/SVG11/feature#Extensibility'
                 height={16} width={20} x={0} y={0}
-                class-sprotty-icon transform={translate}>
+                // transform={translate}
+                class-sprotty-icon>
                 {foreignObjectContents}
             </foreignObject>
         </g>;
