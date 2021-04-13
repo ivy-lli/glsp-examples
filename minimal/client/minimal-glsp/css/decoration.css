@@ -15,9 +15,14 @@
  ********************************************************************************/
 
 :root {
+  --glsp-issue-background: black;
   --glsp-error-foreground: red;
-  --glsp-warning-foreground: yellow;
+  --glsp-warning-foreground: orange;
   --glsp-info-foreground: lightblue;
+}
+
+.sprotty-issue .sprotty-issue-background {
+  fill: var(--glsp-issue-background);
 }
 
 .sprotty-issue.sprotty-error {
