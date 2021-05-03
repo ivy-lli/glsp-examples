@@ -13,7 +13,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { getPort } from '@eclipse-glsp/protocol';
 import { ILogger } from '@theia/core';
 import { BackendApplicationContribution } from '@theia/core/lib/node';
 import { ProcessErrorEvent } from '@theia/process/lib/node/process';
@@ -21,10 +20,6 @@ import { ProcessManager } from '@theia/process/lib/node/process-manager';
 import { RawProcess, RawProcessFactory } from '@theia/process/lib/node/raw-process';
 import * as cp from 'child_process';
 import { inject, injectable } from 'inversify';
-import { join, resolve } from 'path';
-
-const jarPath = resolve(join(__dirname, '..', '..', 'server', 'org.eclipse.glsp.example.minimal-0.8.0-glsp.jar'));
-const serverPort = getPort('MINIMAL_GLSP');
 
 @injectable()
 export class MinimalServerLauncher implements BackendApplicationContribution {
@@ -33,16 +28,7 @@ export class MinimalServerLauncher implements BackendApplicationContribution {
     @inject(ILogger) private readonly logger: ILogger;
 
     initialize(): void {
-        if (!inDebugMode() && !this.start()) {
-            this.logError('Error during model server startup');
-        }
-    }
-
-    start(): boolean {
-        const args = ['-jar', jarPath, '--port', `${serverPort}`];
-        this.spawnProcessAsync('java', args);
-        return true;
-
+        // Do nothing
     }
 
     protected spawnProcessAsync(command: string, args?: string[], options?: cp.SpawnOptions): Promise<RawProcess> {
@@ -80,9 +66,4 @@ export class MinimalServerLauncher implements BackendApplicationContribution {
             this.logger.info(`MinimalServerLauncher: ${data}`);
         }
     }
-}
-
-export function inDebugMode(): boolean {
-    const args = process.argv.filter(a => a.startsWith('--DEBUG'));
-    return args.length > 0;
 }
