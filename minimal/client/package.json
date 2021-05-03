@@ -52,7 +52,6 @@
   "workspaces": [
     "minimal-glsp",
     "minimal-theia",
-    "browser-app",
-    "electron-app"
+    "browser-app"
   ]
 }
